@@ -58,11 +58,19 @@ function createTimelineCircle() {
 }
 
 function createTimeLineItem(time, type, amount) {
+    let left = type === 'dr' ? `<div class='dr'>${amount}</div>` : "<div class='dr'></div>";
+    let right = type === 'cr' ? `<div class='cr'>${amount}</div>` : "<div class='cr'></div>";
+
+
     let timelineitem = document.createElement("div")
+
     timelineitem.className = 'timeline-item'
-    timelineitem.innerHTML = `<div class="time">${time}</div> 
-                              <div class="dr">${amount}</div>
-                              <div class="cr">${amount}</div>`
+    timelineitem.innerHTML = `
+        <div class="time">${time}</div>
+        ${left}
+        ${right}
+    `;
+
     $('timeline-time').appendChild(timelineitem)
 }
 
@@ -77,8 +85,8 @@ daysOfWeek.forEach(item => {
 
 //Populates days in calendar
 for (let i = 1; i <= Math.ceil(days/daysInWeek) ; i++) {
-        let diwRow = document.createElement("div")
-        diwRow.id = `wk${i}`
+    let diwRow = document.createElement("div")
+    diwRow.id = `wk${i}`
     for (let j = 1; j <= daysInWeek ; j++) {
 
         let diwCell = document.createElement("div")
@@ -102,12 +110,12 @@ for (let i = 1; i <= Math.ceil(days/daysInWeek) ; i++) {
 // })
 
 $qsa('div[id^=wk] > div').forEach(e => {
-    
+
     // Highlights the current day
     if ( Number(e.innerText) === day){
         e.style.backgroundColor = "rgba(47,0,255,0.3)"
     }
-    
+
     // actions to be performed on the click of an individual cell
     e.addEventListener("click", ()=>{
         $("timeline").innerHTML = ''
@@ -115,11 +123,11 @@ $qsa('div[id^=wk] > div').forEach(e => {
         console.log(e.innerText)
         $("moredeets").style.display = 'block';
         $("moredeets-banner-heading").innerText = `${e.innerText} ${monthsOfYear[month]}, ${year}`
-        
-        
+
+
         let temp = month_d.find(val => Number(e.innerText) === val.day)
         console.log(temp)
-        
+
         if (typeof temp === "object"){
             for (const tempElement of temp.transaction) {
                 createTimelineCircle()
@@ -127,17 +135,17 @@ $qsa('div[id^=wk] > div').forEach(e => {
                 createTimeLineItem(tempElement.timestamp, tempElement.type, tempElement.amount)
             }
         }
-        
-        else {
+
+        else{
             $('timeline-time').innerHTML = `<h3>No Transactions on this day</h3>`
             // for (let i = 0; i < 24 ; i++) {
             //    createTimelineCircle()
             // }
         }
-        
+
     })
-    
-    
+
+
 
 })
 
