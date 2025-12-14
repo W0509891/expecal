@@ -1,0 +1,40 @@
+@import "../../../styles";
+$text-color: #f16daf;
+
+p, a, h1, h2, h3, h4, h5, h6{
+  color: $text-color;
+}
+
+a:hover{
+  color: #007bff;
+}
+.navbar-container {
+  outline: $debug-outline1;
+  background-color: #5a5a5a;
+  width: 100%;
+
+  .navbar{
+    display: flex;
+    align-items: center;
+    //background-color: #f16daf;
+    justify-content: space-between;
+    width: 95%;
+    margin: 0 auto;
+    height: inherit;
+
+    &:nth-child(n), a{
+      padding: .7em;
+    }
+  }
+}
+
+
+.left{}
+
+.center{}
+
+.right{
+  img{
+    width: 10%;
+  }
+}
