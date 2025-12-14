@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+$debug-outline1: 1px solid red;
+$debug-outline2: 1px solid blue;
+$debug-outline3: 1px solid green;
+$debug-outline4: 1px solid orange;
+
+* {
+  padding: 0;
+  margin: 0;
+}
