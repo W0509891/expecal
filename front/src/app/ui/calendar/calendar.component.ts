@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Calendar} from "../../services/calendar-load.service"
-import {Calendar_Model, Day} from "../../models/Calendar_Model"
+import {CalendarModel, Day} from "../../models/CalendarModel"
 
 
 @Component({
@@ -40,7 +40,7 @@ import {Calendar_Model, Day} from "../../models/Calendar_Model"
 export class CalendarComponent {
 
   private ImportedCalender = new Calendar()
-  private ImportedCalenderModel = new Calendar_Model(this.ImportedCalender.Year)
+  private ImportedCalenderModel = new CalendarModel(this.ImportedCalender.Year)
 
   protected month = this.ImportedCalenderModel.Year.getMonth(this.ImportedCalender.Month)
   protected weeks: Day[][] = [];

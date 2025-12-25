@@ -1,7 +1,7 @@
 /**
  *
  */
-export class Calendar_Model {
+export class CalendarModel {
   Year: Year
   DaysInYear: number
   MonthsInYear: number
@@ -19,13 +19,10 @@ export class Calendar_Model {
     return this.Year
   }
 
-  // Get the month using the (0 indexed month number)
-  getMonth(month: number): Month {
-    return this.Year.getMonths()[month]
-  }
+
 
   getCurrentDay(): Day {
-    return this.getMonth(12).getDay(11)
+    return this.Year.getMonth(11).getDay(24)
   }
 
 }
@@ -50,6 +47,10 @@ class Year {
     return this.Months
   }
 
+  // Get the month using the (0 indexed month number)
+  getMonth(month: number): Month {
+    return this.Months[month % 12]
+  }
   toString() {
     return `Year: ${this.Id}, Months: ${this.Months.length}, isLeapYear: ${this.isLeapYear}`
   }
@@ -75,6 +76,12 @@ class Month {
     this.Weeks = Math.ceil(this.Days.length / 7)
   }
 
+  //Returns all the days of the month
+  getDays(): Day[] {
+    return this.Days
+  }
+
+  //Returns a singular day of the month using the (0 indexed day number)
   getDay(day: number): Day {
     return this.Days[day % this.Days.length]
   }
@@ -128,7 +135,7 @@ class Transaction {
 // const month = new Month(9, year)
 // const day = new Day(1, month, [])
 //
-// const cyear = new Calendar_Model(year)
+// const cyear = new CalendarModel(year)
 //
 // // console.log(year)
 // // console.log(month)
