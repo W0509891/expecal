@@ -8,3 +8,11 @@ $debug-outline4: 1px solid orange;
   padding: 0;
   margin: 0;
 }
+
+body{
+  height: 100vh;
+}
+
+*, ::after, ::before {
+  box-sizing: border-box;
+}
