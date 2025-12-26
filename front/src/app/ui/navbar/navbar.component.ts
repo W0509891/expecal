@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Calendar} from "../../services/calendar-load.service"
+import {CalendarModel} from "../../models/CalendarModel"
 
 
 @Component({
@@ -22,7 +22,7 @@ import {Calendar} from "../../services/calendar-load.service"
 
         <div class="right">
           <div>
-            <p>{{ ImportedCalender.getToday() }}</p>
+            <p>{{_CalendarModel.CalDate.toDateString()}}</p>
           </div>
         </div>
 
@@ -33,6 +33,5 @@ import {Calendar} from "../../services/calendar-load.service"
 })
 
 export class NavbarComponent {
-  protected ImportedCalender = new Calendar();
-
+  protected readonly _CalendarModel = CalendarModel;
 }

@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {Calendar} from "../../services/calendar-load.service"
 import {CalendarModel, Day} from "../../models/CalendarModel"
 
 
@@ -10,10 +9,10 @@ import {CalendarModel, Day} from "../../models/CalendarModel"
   template: `
     <div class="calendar-container">
       <div class="weekdays-row">
-        @for (weekday of weekdays; track weekday) {
+        @for (weekday of weekdays; track weekdays[$index]) {
 
-          <div
-            [className]="(current_day.Name !== weekday)? 'weekday-item' : 'weekday-item selected-day' ">{{ weekday }}
+          <div [className]="(current_day.Name !== weekday)? 'weekday-item' : 'weekday-item selected-day' ">
+            {{ weekday }}
           </div>
         }
       </div>
@@ -24,7 +23,7 @@ import {CalendarModel, Day} from "../../models/CalendarModel"
 
             @for (day of week; track day.Id; ) {
 
-              <div class="day {{day.Name}}">
+              <div [className]="(day.Id !== 0)? 'day': 'day zero' ">
                 <div class="day-item">{{ day.Id }}</div>
               </div>
             }
@@ -39,10 +38,9 @@ import {CalendarModel, Day} from "../../models/CalendarModel"
 
 export class CalendarComponent {
 
-  private ImportedCalender = new Calendar()
-  private ImportedCalenderModel = new CalendarModel(this.ImportedCalender.Year)
+  private ImportedCalenderModel = new CalendarModel()
 
-  protected month = this.ImportedCalenderModel.Year.getMonth(this.ImportedCalender.Month)
+  protected month = this.ImportedCalenderModel.Year.getMonth()
   protected weeks: Day[][] = [];
 
   protected weekdays = this.month.DayNames
@@ -52,26 +50,54 @@ export class CalendarComponent {
 
 
   constructor() {
-    console.log("Imported Cal", this.ImportedCalender.toString())
-    console.log("Imported Cal_Mod", this.ImportedCalenderModel)
+    // console.log("Imported Cal_Mod", this.ImportedCalenderModel)
+    console.log("Imported Cal_Mod month", this.month)
     this.generateWeeks();
+    console.log(this.weeks)
+    console.log(this.month.getFirstDay())
+    window.addEventListener('resize', () => {
+      this.screenChange()
+    })
+
   }
 
   generateWeeks() {
     this.weeks = [];
     const days = this.month.getDays();
-    const daysInWeek = 7;
 
+    const weekday = this.month.getStartDay();
+    const daysInWeek = 7;
+    const daysleft: number = (35 - (days.length + weekday) >= 0) ? 35 - (days.length + weekday) : 6
+
+
+    console.log("weekday", weekday, this.weekdays[weekday])
+
+    //Padding for front
+    for (let i = weekday; i > 0; i--) {
+      days.unshift(new Day(0, this.month, []));
+    }
 
     for (let i = 0; i < days.length; i += daysInWeek) {
       this.weeks.push(days.slice(i, i + daysInWeek));
     }
 
-    this.weeks[4].push(new Day(32, this.month, []));
-    this.weeks[4].push(new Day(33, this.month, []));
-    this.weeks[4].push(new Day(34, this.month, []));
-    this.weeks[4].push(new Day(35, this.month, []));
+    console.log("days left", daysleft)
+
+    //Padding for back
+    for (let i = 0; i < daysleft; i++) {
+      this.weeks[this.weeks.length - 1].push(new Day(0, this.month, []));
+    }
   }
 
-  protected readonly String = String;
+
+  screenChange() {
+    // console.log("screen change", window.innerWidth)
+    if (window.innerWidth < 768) {
+      this.weekdays = this.weekdays.map(item =>
+        item.substring(0, 3)
+      )
+    } else {
+      this.weekdays = this.month.DayNames
+    }
+  }
 }

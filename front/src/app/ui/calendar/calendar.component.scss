@@ -45,7 +45,7 @@
     display: flex;
     flex: 1;
     background-color: #c8e7ff;
-    border: 1px solid orange;
+    //border: 1px solid orange;
 
     .day {
       outline: 1px solid rgba(0, 0, 0, 0.1);
@@ -63,6 +63,20 @@
 
       .day-item {
 
+      }
+    }
+
+    .zero{
+      outline: none;
+      background-color: #9ba5ad;
+
+      >*{
+        display: none;
+      }
+
+      &:hover{
+        background-color: #9ba5ad;
+        pointer-events: none;
       }
     }
   }
