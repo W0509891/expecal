@@ -1,4 +1,5 @@
 @use 'sass:math';
+@use "variables" as *;
 
 :host {
   display: block;
@@ -25,10 +26,7 @@
     width: math.percentage(math.div(100, 7));
   }
 
-  //If Week Day is current day
-  .selected-day {
-    background-color: #ffc107;
-  }
+
 
 }
 
@@ -44,7 +42,7 @@
   .week-row {
     display: flex;
     flex: 1;
-    background-color: #c8e7ff;
+
     //border: 1px solid orange;
 
     .day {
@@ -53,31 +51,22 @@
       flex: 1;
       align-items: center;
       justify-content: center;
-      position: relative;
       min-height: 0;
-
-      &:hover {
-        cursor: pointer;
-        background-color: rgba(0, 123, 255, 0.1);
-      }
+      @include day(#f4ebda);
 
       .day-item {
 
       }
+
+    }
+
+    //If Week Day is current day
+    .selected-day {
+      @include day(#95b359);
     }
 
     .zero{
-      outline: none;
-      background-color: #9ba5ad;
-
-      >*{
-        display: none;
-      }
-
-      &:hover{
-        background-color: #9ba5ad;
-        pointer-events: none;
-      }
+     @include month-outside
     }
   }
 }

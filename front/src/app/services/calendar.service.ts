@@ -16,8 +16,8 @@ export class CalendarService {
 
   constructor() {
     this._year = this.calModel.getYear();
-    this._month = this.calModel.getYear().getMonth();
-    this._current_day = this.calModel.getCurrentDay();
+    this._month = this.calModel.getMonth();
+    this._current_day = this.calModel.getDay();
     this._weekdays = Month.DayNames;
     this.generateMonthView();
   }
@@ -47,15 +47,15 @@ export class CalendarService {
     //last month from the previous year or previous month in the same year
     const previousMonth = this._month.getId() === 0 ?
       new Month(11, this._year.getId() - 1, CalendarModel.isLeapYear(this._year.getId() - 1)) :
-      this._year.getMonth(this._month.getId() - 1);
+      this.calModel.getMonth(this._month.getId() - 1);
 
     //first month in next year or next month in the same year
     const nextMonth = this._month.getId() === 11 ?
       new Month(0, this._year.getId() + 1, CalendarModel.isLeapYear(this._year.getId() + 1)) :
-      this._year.getMonth(this._month.getId() + 1);
+      this.calModel.getMonth(this._month.getId() + 1);
 
 
-    console.log("First Day", this._month.getDay())
+    console.log("First Day", this.calModel.getDay())
     console.log("weekday", startDay, this._weekdays[startDay])
 
 
@@ -63,7 +63,7 @@ export class CalendarService {
     //Fills the array with days from the previous month
     for (let j = 0; j < startDay; j++) {
       // noOfDays in prev month less curr month start index + n to get days of prev month
-      monthView[j] = previousMonth.getDay(previousMonth.getDays().length - startDay + (j + 1))
+      monthView[j] = previousMonth.getDays()[previousMonth.getNoOfDays() - startDay + (j)] //chnge to no of days
     }
 
     //Fills the array with days in the current month
@@ -73,8 +73,8 @@ export class CalendarService {
 
 
     //Fills the array with days after month
-    for (let i = 1, daysLeft = this._cal_view_days - monthView.length; i <= daysLeft; i++) {
-      monthView.push(nextMonth.getDay(i));
+    for (let i = 0, daysLeft = this._cal_view_days - monthView.length; i <= daysLeft; i++) {
+      monthView.push(nextMonth.getDays()[i]);
     }
 
 
@@ -94,17 +94,17 @@ export class CalendarService {
    * @param num
    */
   changeMonthBy(num: number) {
-    const currentDate = CalendarModel.CalDate  // Save the current date
+    const currentDate = this.calModel.CalDate  // Save the current date
     // Change the current date by the given number of months
-    CalendarModel.CalDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + num, 1)
+    this.calModel.CalDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + num, 1)
 
     // If the year has changed, update the year object in the calendarService
-    if (CalendarModel.CalDate.getFullYear() !== currentDate.getFullYear()) {
-      this.calModel.setYear(CalendarModel.CalDate.getFullYear())
+    if (this.calModel.CalDate.getFullYear() !== currentDate.getFullYear()) {
+      this.calModel.setYear(this.calModel.CalDate.getFullYear())
     }
 
     // Update the current month object in the calendarService
-    this._month = this.calModel.getYear().getAllMonths()[CalendarModel.CalDate.getMonth()]
+    this._month = this.calModel.getYear().getAllMonths()[this.calModel.CalDate.getMonth()]
     this.generateMonthView()  // Regenerate the month view based on the new month object
 
   }
