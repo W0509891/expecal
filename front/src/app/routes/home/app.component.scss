@@ -1,6 +1,7 @@
 :host {
-  display: block;
   height: 100vh;
-  max-height: 95%;
+  max-height: 100vh;
   background-color: #dbd6cc;
+  display: flex;
+  flex-direction: column;
 }

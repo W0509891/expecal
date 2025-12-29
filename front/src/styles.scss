@@ -1,8 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-$debug-outline1: 1px solid red;
-$debug-outline2: 1px solid blue;
-$debug-outline3: 1px solid green;
-$debug-outline4: 1px solid orange;
+@use 'variables' as *;
 
 * {
   padding: 0;
@@ -11,6 +8,8 @@ $debug-outline4: 1px solid orange;
 
 body{
   height: 100vh;
+  max-height: 100vh;
+  max-width: $max-width;
 }
 
 *, ::after, ::before {

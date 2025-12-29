@@ -1,0 +1,25 @@
+$debug-outline1: 1px solid red;
+$debug-outline2: 1px solid blue;
+$debug-outline3: 1px solid green;
+$debug-outline4: 1px solid orange;
+
+
+$main-color: #f16daf;
+$secondary-color: #007bff;
+$tetiary-color: #dc3545;
+$text-color: #212529;
+$max-width: 2200px;
+
+@mixin month-outside{
+ @include day(#b3b3b3);
+
+}
+
+@mixin day($color){
+  background-color: $color;
+
+  &:hover{
+    cursor: pointer;
+    background-color: darken($color, 10%);
+  }
+}
