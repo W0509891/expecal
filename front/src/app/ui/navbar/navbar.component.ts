@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {CalendarModel} from "../../models/CalendarModel"
+import {Component, inject} from '@angular/core';
+import {CalendarService} from "../../services/calendar.service"
 
 
 @Component({
@@ -17,12 +17,14 @@ import {CalendarModel} from "../../models/CalendarModel"
         </div>
 
         <div class="center">
+          <button id="back" (click)="onMonthChange(-1)"><-</button>
           <h3>Expense Cal</h3>
+          <button id="front" (click)="onMonthChange(1)">-></button>
         </div>
 
         <div class="right">
           <div>
-            <p>{{_CalendarModel.CalDate.toDateString()}}</p>
+            <p>{{CalendarService.calModel.CalDate.toDateString()}}</p>
           </div>
         </div>
 
@@ -33,5 +35,11 @@ import {CalendarModel} from "../../models/CalendarModel"
 })
 
 export class NavbarComponent {
-  protected readonly _CalendarModel = CalendarModel;
+  CalendarService: CalendarService = inject(CalendarService);
+  
+  constructor() {}
+
+  onMonthChange(step: number) {
+    this.CalendarService.changeMonthBy(step);
+  }
 }

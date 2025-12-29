@@ -31,7 +31,21 @@ a:hover{
 
 .left{}
 
-.center{}
+.center{
+  display: flex;
+
+  button{
+    margin: 0 1em;
+    width: 100px;
+    border: none;
+    background-color: #eec7da;
+    border-radius: 10px;
+
+    &:hover{
+      background-color: #f16daf;
+    }
+   }
+}
 
 .right{
   img{
