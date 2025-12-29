@@ -3,7 +3,7 @@
  * Provides static methods for date manipulation and instance methods for year-related operations.
  */
 export class CalendarModel {
-  CalDate: Date = new Date()  // represents the current date
+  CalDate: Date = new Date ()  // represents the current date
   private Year: Year                 // represents the current year and its associated months
   DaysInYear: number                 // number of days in the current year
   MonthsInYear: number               // number of months in the current year

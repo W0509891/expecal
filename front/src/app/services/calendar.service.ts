@@ -26,12 +26,20 @@ export class CalendarService {
    * Generates the array size based on the month start day.
    */
   generateArraySize() {
-    //Checks if it starts on a fri/sat & if the month is not feb and is more than 30 da
-    if ((this._month.getStartDay() === 5 || this._month.getStartDay() === 6) && (this._month.getId() !== 1)) {
-      this._cal_view_days = 42
-      return
+    //Checks if it starts on a fri/sat & if the month is not feb and is more than 30 days
+    switch (this._month.getNoOfDays()) {
+      case 31:
+        this._cal_view_days = (this._month.getStartDay() > 4) ? 42 : 35
+        return
+
+      case 30:
+        this._cal_view_days = (this._month.getStartDay() === 6)? 42 : 35
+        return
+
+      default:
+        this._cal_view_days = 35
+        return;
     }
-    this._cal_view_days = 35
   }
 
   /**
@@ -73,7 +81,7 @@ export class CalendarService {
 
 
     //Fills the array with days after month
-    for (let i = 0, daysLeft = this._cal_view_days - monthView.length; i <= daysLeft; i++) {
+    for (let i = 0, daysLeft = this._cal_view_days - monthView.length; i < daysLeft; i++) {
       monthView.push(nextMonth.getDays()[i]);
     }
 
@@ -107,6 +115,14 @@ export class CalendarService {
     this._month = this.calModel.getYear().getAllMonths()[this.calModel.CalDate.getMonth()]
     this.generateMonthView()  // Regenerate the month view based on the new month object
 
+  }
+
+  setNewDate(year: number, month: number = 0, day: number = 1) {
+    this.calModel.CalDate = new Date(year, month, day)
+    this.calModel.setYear(year)
+    this._month = this.calModel.getMonth();
+    this._current_day = this.calModel.getDay();
+    this.generateMonthView();
   }
 
 

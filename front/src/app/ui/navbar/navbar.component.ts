@@ -36,7 +36,7 @@ import {CalendarService} from "../../services/calendar.service"
 
 export class NavbarComponent {
   CalendarService: CalendarService = inject(CalendarService);
-  
+
   constructor() {}
 
   onMonthChange(step: number) {
