@@ -1,3 +1,5 @@
+import {Transaction} from "./Transaction";
+
 /**
  * Represents a calendar model that manages year, month, and day operations.
  * Provides static methods for date manipulation and instance methods for year-related operations.
@@ -300,15 +302,4 @@ export class Day {
   }
 }
 
-class Transaction {
-  Timestamp: string
-  Type: string
-  Amount: number
-
-  constructor(timestamp: string, type: string, amount: number) {
-    this.Timestamp = timestamp;
-    this.Type = type;
-    this.Amount = amount;
-  }
-}
 
