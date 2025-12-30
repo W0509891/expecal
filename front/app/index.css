@@ -25,7 +25,7 @@ header{
 }
 
 aside#side-bar{
-    grid: sidemen;
+    grid-area: sidemen;
     position: relative;
     width: 55px;
     height: 100%;

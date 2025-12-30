@@ -1,11 +1,11 @@
 import {Component, inject} from '@angular/core';
 import {CalendarService} from "../../services/calendar.service"
 import {Day} from '../../models/CalendarModel';
-
+import {FiscalDayComponent} from "../fiscal-day/fiscal-day.component";
 
 @Component({
   selector: 'home-calendar',
-  imports: [],
+  imports: [FiscalDayComponent],
   styleUrl: './calendar.component.scss',
   template: `
     <div class="calendar-container">
@@ -23,7 +23,7 @@ import {Day} from '../../models/CalendarModel';
             @for (day of week; track day.getId(); ) {
 
               <div [class]="setDayClasses(day)">
-                <div class="day-item">{{ day.getId() }}</div>
+                    <fiscal-day [day]="day" />
               </div>
             }
           </div>
