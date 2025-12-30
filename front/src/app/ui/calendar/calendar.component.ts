@@ -21,10 +21,7 @@ import {FiscalDayComponent} from "../fiscal-day/fiscal-day.component";
           <div id="week-{{$index + 1}}" class="week-row">
 
             @for (day of week; track day.getId(); ) {
-
-              <div [class]="setDayClasses(day)">
-                    <fiscal-day [day]="day" />
-              </div>
+              <fiscal-day [day]="day" [class]="setDayClasses(day)" />
             }
           </div>
         }

@@ -46,18 +46,7 @@
     //border: 1px solid orange;
 
     .day {
-      outline: 1px solid rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex: 1;
-      align-items: center;
-      justify-content: center;
-      min-height: 0;
       @include day(#f4ebda);
-
-      .day-item {
-
-      }
-
     }
 
     //If Week Day is current day
@@ -66,7 +55,7 @@
     }
 
     .zero{
-     @include month-outside
+     @include day(#b3b3b3)
     }
   }
 }
