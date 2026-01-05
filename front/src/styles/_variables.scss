@@ -1,3 +1,5 @@
+@use 'sass:color';
+
 $debug-outline1: 1px solid red;
 $debug-outline2: 1px solid blue;
 $debug-outline3: 1px solid green;
@@ -30,6 +32,6 @@ $debit-color: #dc3545;
 
   &:hover{
     cursor: pointer;
-    background-color: darken($color, 10%);
+    background-color: color.adjust($color, $blackness: 10%);
   }
 }
