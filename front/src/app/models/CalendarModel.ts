@@ -1,4 +1,4 @@
-import {Transaction} from "./Transaction";
+import {Transaction} from "./Transaction.interface";
 
 /**
  * Represents a calendar model that manages year, month, and day operations.
