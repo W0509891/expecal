@@ -1,5 +1,6 @@
 import {Component, inject} from '@angular/core';
 import {CalendarService} from "../../services/calendar.service"
+import {SidebarService} from "../../ui/sidebar/sidebar.component"
 
 
 @Component({
@@ -11,9 +12,9 @@ import {CalendarService} from "../../services/calendar.service"
       <div class="navbar">
 
         <div class="left">
-          <a href="">Link 4</a>
-          <!--        <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar"-->
-          <!--             class="avatar">-->
+          <div (click)="onClicked()">
+            <img src="/assets/svg/hamburger.svg">
+          </div>
         </div>
 
         <div class="center">
@@ -36,9 +37,13 @@ import {CalendarService} from "../../services/calendar.service"
 
 export class NavbarComponent {
   CalendarService: CalendarService = inject(CalendarService);
+  SidebarService: SidebarService = inject(SidebarService)
 
   constructor() {}
 
+  onClicked() {
+    this.SidebarService.toggle()
+  }
   onMonthChange(step: number) {
     this.CalendarService.changeMonthBy(step);
   }
