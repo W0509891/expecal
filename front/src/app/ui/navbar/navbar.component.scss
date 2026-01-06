@@ -18,7 +18,6 @@ a:hover{
     align-items: center;
     //background-color: #f16daf;
     justify-content: space-between;
-    width: 95%;
     margin: 0 auto;
     height: inherit;
 
@@ -29,10 +28,22 @@ a:hover{
 }
 
 
-.left{}
+.left{
+  flex: 1 1;
+
+
+    img{
+      width: 10%;
+      &:hover{
+         cursor: pointer;
+       }
+    }
+}
 
 .center{
+  flex: 2 1;
   display: flex;
+  justify-content: center;
 
   button{
     margin: 0 1em;
@@ -48,6 +59,8 @@ a:hover{
 }
 
 .right{
+  flex: 1 1;
+  place-items: end;
   img{
     width: 10%;
   }
