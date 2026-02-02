@@ -91,10 +91,6 @@ export class CalendarService {
       {length: monthView.length / 7},
       (_, i) => monthView.slice(i * 7, i * 7 + 7)
     );
-
-    console.log("monthView", monthView)
-    console.log("weeks", this._weeks)
-
   }
 
   /**

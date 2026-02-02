@@ -45,13 +45,7 @@ export class SidebarComponent {
 
 @Injectable({providedIn: 'root'})
 class SidebarService{
-  static sidebarinitCount: number = 0
   navbarClosed: boolean = false
-
-  constructor(){
-    console.log("Sidebar service created", ++SidebarService.sidebarinitCount)
-    console.log(this.navbarClosed, "Sidebar Closed status")
-  }
 
   toggle(){
     this.navbarClosed = !this.navbarClosed

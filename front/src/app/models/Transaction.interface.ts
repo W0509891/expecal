@@ -1,8 +1,11 @@
 export interface Transaction {
-  date: string
-  transaction: string
-  description: string
-  amount: string
-  balance: string
+  id: number
+  date?: string
+  transaction?: string
+  description?: string
+  account_id: number
+  type: string
+  amount: number
+  balance: number
   currency: string
 }
