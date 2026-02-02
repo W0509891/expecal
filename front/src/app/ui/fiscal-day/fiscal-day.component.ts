@@ -1,4 +1,4 @@
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, signal, inject, Input, OnInit} from '@angular/core';
 import {Day} from '../../models/CalendarModel';
 import {Transaction} from '../../models/Transaction.interface';
 import {TransactionService} from '../../services/transaction.service';
@@ -17,7 +17,7 @@ import {TransactionService} from '../../services/transaction.service';
     <div class="gain">
       <!--Todo: run calculation to display total and set color based on amt-->
       <span>
-        \${{this.day.totalGain() }}
+        \${{ day.totalGain() }}
       </span>
     </div>
 
@@ -26,31 +26,26 @@ import {TransactionService} from '../../services/transaction.service';
       <!--todo: run calculations for spending amounts-->
       <div class="dr">
         <span>Spent</span>
-        <span>\${{this.day.totalDebit()}}</span>
+        <span>\${{ day.totalDebit() }}</span>
       </div>
       <div class="cr">
         <span>Recived</span>
-        <span>\${{this.day.totalCredit()}}</span>
+        <span>\${{ day.totalCredit() }}</span>
       </div>
     </div>
   `
 })
-export class FiscalDayComponent implements OnInit{
+export class FiscalDayComponent{
   // static day: number = 1
   @Input() day!: Day
-  // transactions: Transaction[] = []
-  transactionService = inject(TransactionService)
-  constructor() {
+  @Input() transactions!: Transaction[]
 
+  constructor() {}
 
-
-  }
-
-  ngOnInit() {
-
+  ngOnChanges() {
     if (this.day){
-      this.transactionService.fetchTransactions(this.day!.toString("short") as string).then(data => this.day.setTransactions(data))
-
+        console.log(this.day.toString("short"), this.transactions)
+        this.day.setTransactions(this.transactions ?? [])
     }
   }
 }

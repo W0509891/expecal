@@ -1,7 +1,8 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {CalendarService} from "../../services/calendar.service"
 import {Day} from '../../models/CalendarModel';
 import {FiscalDayComponent} from "../fiscal-day/fiscal-day.component";
+import {TransactionService} from '../../services/transaction.service';
 
 @Component({
   selector: 'home-calendar',
@@ -21,7 +22,9 @@ import {FiscalDayComponent} from "../fiscal-day/fiscal-day.component";
           <div id="week-{{$index + 1}}" class="week-row">
 
             @for (day of week; track day.getId(); ) {
-              <fiscal-day [day]="day" [class]="setDayClasses(day)" />
+              <fiscal-day [day]="day"
+                          [transactions]="ts.transactions()[(day.toString('short').toString())]"
+                          [class]="setDayClasses(day)" />
             }
           </div>
         }
@@ -32,10 +35,16 @@ import {FiscalDayComponent} from "../fiscal-day/fiscal-day.component";
 })
 
 
-export class CalendarComponent {
+export class CalendarComponent implements OnInit{
 
+  //Injectables
   CalenderService: CalendarService = inject(CalendarService);
+  ts:TransactionService = inject(TransactionService)
+
   weekdays: string[]
+  weeks: Day[][] = this.CalenderService.getWeeks()
+  startDay: string = this.weeks[0][0].toString("short") as string
+  endDay: string = this.weeks[this.weeks.length - 1][6].toString("short") as string
 
   constructor() {
     //Initializers
@@ -45,7 +54,6 @@ export class CalendarComponent {
     window.addEventListener('resize', () => {
       this.screenChange()
     })
-
   }
 
   /*----------------UI RELATED FUNCTIONS---------------*/
@@ -71,5 +79,7 @@ export class CalendarComponent {
     }
   }
 
-  protected readonly Day = Day;
+ async ngOnInit() {
+     await this.ts.fetchTransactionByRange(this.startDay, this.endDay).then(data => this.ts.transactions.set(data))
+ }
 }
