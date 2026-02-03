@@ -333,14 +333,15 @@ export class Day {
    * @param format the format of return type "obj" for object notation
    *
    */
-  toString(format?: string) {
+  toString(format?: string):string | object {
     if (format === 'obj') {
       return {Id: this.Id, Name: this.Name, Month: this.Month.getName, Transactions: this.Transactions}
     }
 
     if (format === 'short') {
       const newid = this.Id < 10 ? `0${this.Id}` : this.Id
-      return `${this.Month.getYear()}-0${this.Month.getId()+1}-${newid}`
+      const monthid = this.getMonth().getId() + 1 < 10 ? `0${this.getMonth().getId() + 1}` : this.getMonth().getId() + 1
+      return `${this.Month.getYear()}-${monthid}-${newid}` as string
     }
 
     return `Day: ${this.Id}, Month: ${this.Month.getName()}`

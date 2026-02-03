@@ -43,8 +43,8 @@ export class FiscalDayComponent{
   constructor() {}
 
   ngOnChanges() {
+    // console.log("Day has changed")
     if (this.day){
-        console.log(this.day.toString("short"), this.transactions)
         this.day.setTransactions(this.transactions ?? [])
     }
   }
