@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, computed, effect, inject} from '@angular/core';
 import {CalendarService} from "../../services/calendar.service"
 import {Day} from '../../models/CalendarModel';
 import {FiscalDayComponent} from "../fiscal-day/fiscal-day.component";
@@ -35,16 +35,16 @@ import {TransactionService} from '../../services/transaction.service';
 })
 
 
-export class CalendarComponent implements OnInit{
+export class CalendarComponent{
 
   //Injectables
   CalenderService: CalendarService = inject(CalendarService);
   ts:TransactionService = inject(TransactionService)
 
   weekdays: string[]
-  weeks: Day[][] = this.CalenderService.getWeeks()
-  startDay: string = this.weeks[0][0].toString("short") as string
-  endDay: string = this.weeks[this.weeks.length - 1][6].toString("short") as string
+  startDay = computed(() => this.CalenderService.getWeeks()()[0][0].toString('short').toString());
+  endDay = computed(() =>
+    this.CalenderService.getWeeks()()[this.CalenderService.getWeeks()().length - 1][6].toString("short").toString())
 
   constructor() {
     //Initializers
@@ -78,8 +78,4 @@ export class CalendarComponent implements OnInit{
       this.weekdays = this.CalenderService.getWeekdays()
     }
   }
-
- async ngOnInit() {
-     await this.ts.fetchTransactionByRange(this.startDay, this.endDay).then(data => this.ts.transactions.set(data))
- }
 }

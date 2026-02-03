@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, signal} from '@angular/core';
 import {CalendarModel, Day, Month} from "../models/CalendarModel";
 
 @Injectable({providedIn: 'root'})
@@ -9,7 +9,7 @@ export class CalendarService {
   protected _year
   protected _month: Month
   protected _current_day: Day
-  protected _weeks: Day[][] = []
+  protected _weeks = signal<Day[][]>([])
   protected _weekdays: string[]
 
   protected _cal_view_days: number = 0
@@ -63,11 +63,6 @@ export class CalendarService {
       this.calModel.getMonth(this._month.getId() + 1);
 
 
-    console.log("First Day", this.calModel.getDay())
-    console.log("weekday", startDay, this._weekdays[startDay])
-
-
-
     //Fills the array with days from the previous month
     for (let j = 0; j < startDay; j++) {
       // noOfDays in prev month less curr month start index + n to get days of prev month
@@ -87,16 +82,17 @@ export class CalendarService {
 
 
     //Initialize weeks field
-    this._weeks = Array.from(
+    this._weeks.set(Array.from(
       {length: monthView.length / 7},
       (_, i) => monthView.slice(i * 7, i * 7 + 7)
-    );
+    ));
   }
 
   /**
    * Changes the current month by the given number of months.
    * @param num
    */
+  //TOdo: fox bug where year changes when reaching end of 2025/2024
   changeMonthBy(num: number) {
     const currentDate = this.calModel.CalDate  // Save the current date
     // Change the current date by the given number of months
@@ -138,7 +134,7 @@ export class CalendarService {
   }
 
   // Returns a 2d [5|6][7] array representing the week view of the month
-  getWeeks(): Day[][] {
+  getWeeks() {
     return this._weeks;
   }
 
