@@ -1,11 +1,12 @@
-import {Component, inject} from '@angular/core';
+import {Component, computed, effect, inject} from '@angular/core';
 import {CalendarService} from "../../services/calendar.service"
 import {Day} from '../../models/CalendarModel';
-
+import {FiscalDayComponent} from "../fiscal-day/fiscal-day.component";
+import {TransactionService} from '../../services/transaction.service';
 
 @Component({
   selector: 'home-calendar',
-  imports: [],
+  imports: [FiscalDayComponent],
   styleUrl: './calendar.component.scss',
   template: `
     <div class="calendar-container">
@@ -21,10 +22,9 @@ import {Day} from '../../models/CalendarModel';
           <div id="week-{{$index + 1}}" class="week-row">
 
             @for (day of week; track day.getId(); ) {
-
-              <div [class]="setDayClasses(day)">
-                <div class="day-item">{{ day.getId() }}</div>
-              </div>
+              <fiscal-day [day]="day"
+                          [transactions]="ts.transactions()[(day.toString('short').toString())]"
+                          [class]="setDayClasses(day)" />
             }
           </div>
         }
@@ -35,10 +35,16 @@ import {Day} from '../../models/CalendarModel';
 })
 
 
-export class CalendarComponent {
+export class CalendarComponent{
 
+  //Injectables
   CalenderService: CalendarService = inject(CalendarService);
+  ts:TransactionService = inject(TransactionService)
+
   weekdays: string[]
+  startDay = computed(() => this.CalenderService.getWeeks()()[0][0].toString('short').toString());
+  endDay = computed(() =>
+    this.CalenderService.getWeeks()()[this.CalenderService.getWeeks()().length - 1][6].toString("short").toString())
 
   constructor() {
     //Initializers
@@ -48,7 +54,6 @@ export class CalendarComponent {
     window.addEventListener('resize', () => {
       this.screenChange()
     })
-
   }
 
   /*----------------UI RELATED FUNCTIONS---------------*/
@@ -73,6 +78,4 @@ export class CalendarComponent {
       this.weekdays = this.CalenderService.getWeekdays()
     }
   }
-
-  protected readonly Day = Day;
 }

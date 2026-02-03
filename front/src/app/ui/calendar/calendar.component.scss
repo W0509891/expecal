@@ -5,6 +5,7 @@
   display: block;
   height: 100%;
   //width: 100%;
+  flex: 2 1 95%;
 }
 
 .calendar-container {
@@ -25,11 +26,7 @@
     text-align: center;
     width: math.percentage(math.div(100, 7));
   }
-
-
-
 }
-
 
 .weeks {
   display: flex;
@@ -46,18 +43,7 @@
     //border: 1px solid orange;
 
     .day {
-      outline: 1px solid rgba(0, 0, 0, 0.1);
-      display: flex;
-      flex: 1;
-      align-items: center;
-      justify-content: center;
-      min-height: 0;
       @include day(#f4ebda);
-
-      .day-item {
-
-      }
-
     }
 
     //If Week Day is current day
@@ -66,7 +52,7 @@
     }
 
     .zero{
-     @include month-outside
+     @include day(#b3b3b3)
     }
   }
 }

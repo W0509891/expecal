@@ -1,9 +1,11 @@
+import {Transaction} from "./Transaction.interface";
+
 /**
  * Represents a calendar model that manages year, month, and day operations.
  * Provides static methods for date manipulation and instance methods for year-related operations.
  */
 export class CalendarModel {
-  CalDate: Date = new Date ()  // represents the current date
+  CalDate: Date = new Date (2025, 5)  // represents the current date
   private Year: Year                 // represents the current year and its associated months
   DaysInYear: number                 // number of days in the current year
   MonthsInYear: number               // number of months in the current year
@@ -279,6 +281,46 @@ export class Day {
   }
 
   /**
+   * Sets the transactions associated with the day
+   * @param transactions
+   */
+  setTransactions(transactions: Transaction[]) {
+    this.Transactions = transactions
+  }
+
+  totalDebit(){
+    if(this.Transactions && this.Transactions.length > 1){
+      const shallow = this.Transactions.filter(transaction => Number(transaction.amount) < 0)
+      const total = shallow.reduce((acc, curr) => acc + Number(curr.amount), 0)
+      return Number(total.toFixed(2))
+    }
+
+    else if (this.Transactions && this.Transactions.length === 1 && Number(this.Transactions[0].amount) < 0){
+      return Number(this.Transactions[0].amount)
+    }
+
+    return 0
+  }
+
+
+  totalCredit(){
+    if(this.Transactions && this.Transactions.length > 1){
+      const shallow = this.Transactions.filter(transaction => Number(transaction.amount) >= 0)
+      const total = shallow.reduce((acc, curr) => acc + Number(curr.amount), 0)
+      return Number(total.toFixed(2))
+    }
+
+    else if (this.Transactions && this.Transactions.length === 1 && Number(this.Transactions[0].amount) >= 0){
+      return Number(this.Transactions[0].amount)
+    }
+
+    return 0
+  }
+
+  totalGain(){
+    return Number(this.totalCredit() +  this.totalDebit()).toFixed(2)
+  }
+  /**
    * Returns the Month object associated with the Day.
    */
   getMonth(): Month {
@@ -291,24 +333,19 @@ export class Day {
    * @param format the format of return type "obj" for object notation
    *
    */
-  toString(format?: string) {
+  toString(format?: string):string | object {
     if (format === 'obj') {
       return {Id: this.Id, Name: this.Name, Month: this.Month.getName, Transactions: this.Transactions}
+    }
+
+    if (format === 'short') {
+      const newid = this.Id < 10 ? `0${this.Id}` : this.Id
+      const monthid = this.getMonth().getId() + 1 < 10 ? `0${this.getMonth().getId() + 1}` : this.getMonth().getId() + 1
+      return `${this.Month.getYear()}-${monthid}-${newid}` as string
     }
 
     return `Day: ${this.Id}, Month: ${this.Month.getName()}`
   }
 }
 
-class Transaction {
-  Timestamp: string
-  Type: string
-  Amount: number
-
-  constructor(timestamp: string, type: string, amount: number) {
-    this.Timestamp = timestamp;
-    this.Type = type;
-    this.Amount = amount;
-  }
-}
 

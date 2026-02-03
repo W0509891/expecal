@@ -1,4 +1,4 @@
-
+import {Transaction} from "./Transaction.interface";
 export interface Year {
   Id: number,
   Months: Month[],
@@ -20,10 +20,4 @@ export interface Day {
   Name: string
   Month: Month
   Transactions: Transaction[]
-}
-
-export interface Transaction {
-  Timestamp: string
-  Type: string
-  Amount: number
 }
