@@ -131,6 +131,14 @@ export class CalendarComponent{
     //Initializers
     this.weekdays = this.CalenderService.getWeekdays() //[Sun - sat] view on display
 
+     effect(() => {
+      const start = this.startDay();
+      const end = this.endDay();
+
+      this.ts.fetchTransactionByRange(start, end)
+        .then(data => this.ts.transactions.set(data));
+    });
+
     //Event Listeners
     window.addEventListener('resize', () => {
       this.screenChange()
