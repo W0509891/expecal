@@ -1,4 +1,4 @@
-import {Component, computed, effect, inject} from '@angular/core';
+import {Component, computed, effect, inject, model, signal} from '@angular/core';
 import {CalendarService} from "../../services/calendar.service"
 import {Day} from '../../models/CalendarModel';
 import {FiscalDayComponent} from "../fiscal-day/fiscal-day.component";
@@ -64,13 +64,36 @@ export class FiscalDiscription{
 
   prevDay(){
     const prev = this.day().getPrev()
-    prev.setTransactions(this.ts.transactions()[prev.toString("short").toString()])
+    const prev_date = prev.toString("short").toString()
+
+    if(this.ts.transaction_store[prev_date] === undefined){
+      this.ts.fetchTransactionByDate(prev_date).then(data => {
+        let packag = { [prev_date]: data }
+
+        this.day().setTransactions(data)
+        this.ts.fillStore(packag)
+      })
+    }
+    else {
+      prev.setTransactions(this.ts.transaction_store[prev_date])
+    }
     this.day.set(prev)
   }
 
   nextDay(){
     const next = this.day().getNext()
-    next.setTransactions(this.ts.transactions()[next.toString("short").toString()])
+    const next_date = next.toString("short").toString()
+    if(this.ts.transaction_store[next_date] === undefined){
+      this.ts.fetchTransactionByDate(next_date).then(data => {
+        let packag = { [next_date]: data }
+
+        this.day().setTransactions(data)
+        this.ts.fillStore(packag)
+      })
+    }
+    else {
+      next.setTransactions(this.ts.transaction_store[next_date])
+    }
     this.day.set(next)
   }
 }
@@ -96,7 +119,9 @@ export class FiscalDiscription{
             @for (day of week; track day.getId(); ) {
               <fiscal-day [day]="day"
                           [transactions]="ts.transactions()[(day.toString('short').toString())]"
-                          [class]="setDayClasses(day)" />
+                          [class]="setDayClasses(day)"
+                          (click)="dialouge(day)"
+              />
             }
           </div>
         }
@@ -131,12 +156,16 @@ export class CalendarComponent{
     //Initializers
     this.weekdays = this.CalenderService.getWeekdays() //[Sun - sat] view on display
 
+    //TOdo preveent requests if already fetched
      effect(() => {
       const start = this.startDay();
       const end = this.endDay();
 
       this.ts.fetchTransactionByRange(start, end)
-        .then(data => this.ts.transactions.set(data));
+        .then(data => {
+          this.ts.transactions.set(data)
+          this.ts.fillStore();
+        });
     });
 
     //Event Listeners
