@@ -5,8 +5,80 @@ import {FiscalDayComponent} from "../fiscal-day/fiscal-day.component";
 import {TransactionService} from '../../services/transaction.service';
 
 @Component({
+  selector: "fiscal-description",
+  styleUrl: `calendar.component2.scss`,
+  template: `
+    <div class="transaction-details-container">
+      <div class="date-line">
+        <div>
+            <button (click)="prevDay()">&lt;</button>
+            <button (click)="nextDay()">&gt;</button>
+        </div>
+        <h3>{{ day().toString('short') }}</h3>
+        <button (click)="visibility.set(!visibility())">Close</button>
+      </div>
+
+      <div class="transaction-table">
+        <div class=" header trow">
+          <h4 class="tcol1">Description</h4>
+          <div class="tcolspan">
+            <h4 class="tcol2">DR</h4>
+            <h4 class="tcol3">CR</h4>
+          </div>
+        </div>
+        @for (transaction of day().getTransactions(); track transaction.id) {
+          <div class="transaction-details trow">
+            <p class="tcol1">{{ transaction.description }}</p>
+            <div class="tcolspan">
+              <p [class]="trType(transaction.amount)">
+              {{ transaction.amount }}
+              </p>
+            </div>
+          </div>
+        }
+        <div class=" total trow">
+          <h4 class="tcol1">{{day().totalGain()}}</h4>
+          <div class="tcolspan">
+            <h4 class="tcol2">{{day().totalDebit()}}</h4>
+            <h4 class="tcol3">{{day().totalCredit()}}</h4>
+          </div>
+        </div>
+        </div>
+    </div>`
+})
+export class FiscalDiscription{
+  ts:TransactionService = inject(TransactionService)
+
+  day=  model.required<Day>();
+  visibility = model<boolean>();
+  trType = (amount: number):string => {
+    if(amount < 0){
+      return "tcol2"
+    }
+    return "tcol3"
+  }
+
+  ngOnInit(){
+    // console.log(this.day())
+  }
+
+  prevDay(){
+    const prev = this.day().getPrev()
+    prev.setTransactions(this.ts.transactions()[prev.toString("short").toString()])
+    this.day.set(prev)
+  }
+
+  nextDay(){
+    const next = this.day().getNext()
+    next.setTransactions(this.ts.transactions()[next.toString("short").toString()])
+    this.day.set(next)
+  }
+}
+
+
+@Component({
   selector: 'home-calendar',
-  imports: [FiscalDayComponent],
+  imports: [FiscalDayComponent, FiscalDiscription],
   styleUrl: './calendar.component.scss',
   template: `
     <div class="calendar-container">
@@ -29,6 +101,13 @@ import {TransactionService} from '../../services/transaction.service';
           </div>
         }
       </div>
+
+      @if (show()) {
+        <fiscal-description [(day)]="selectedDay"
+                            [(visibility)]="show"
+        />
+      }
+
     </div>
 
   `,
@@ -42,6 +121,8 @@ export class CalendarComponent{
   ts:TransactionService = inject(TransactionService)
 
   weekdays: string[]
+  selectedDay = model.required<Day>()
+  show = signal(false)
   startDay = computed(() => this.CalenderService.getWeeks()()[0][0].toString('short').toString());
   endDay = computed(() =>
     this.CalenderService.getWeeks()()[this.CalenderService.getWeeks()().length - 1][6].toString("short").toString())
@@ -77,5 +158,13 @@ export class CalendarComponent{
       //Restore weekdays to full names
       this.weekdays = this.CalenderService.getWeekdays()
     }
+  }
+
+  dialouge(e: Day){
+    if(e){
+      this.selectedDay.set(e)
+    }
+    this.show.set(!this.show())
+
   }
 }
