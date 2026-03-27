@@ -18,7 +18,7 @@ import {TransactionService} from '../../services/transaction.service';
       </div>
 
       <div class="weeks">
-        @for (week of CalenderService.getWeeks(); track $index; ) {
+        @for (week of CalenderService.getWeeks()(); track $index; ) {
           <div id="week-{{$index + 1}}" class="week-row">
 
             @for (day of week; track day.getId(); ) {
