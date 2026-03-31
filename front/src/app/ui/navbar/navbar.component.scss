@@ -1,8 +1,8 @@
-$text-color: #f16daf;
-$debug-outline1: 1px solid red;
+@use "variables" as *;
+@use "ui" as ui;
 
 p, a, h1, h2, h3, h4, h5, h6{
-  color: $text-color;
+  color: $main-color;
 }
 
 a:hover{
@@ -30,14 +30,6 @@ a:hover{
 
 .left{
   flex: 1 1;
-
-
-    img{
-      width: 10%;
-      &:hover{
-         cursor: pointer;
-       }
-    }
 }
 
 .center{
@@ -45,22 +37,17 @@ a:hover{
   display: flex;
   justify-content: center;
 
-  button{
-    margin: 0 1em;
-    width: 100px;
-    border: none;
-    background-color: #eec7da;
-    border-radius: 10px;
-
-    &:hover{
-      background-color: #f16daf;
-    }
-   }
 }
 
 .right{
-  flex: 1 1;
+  flex:  1;
+  display: flex;
   place-items: end;
+
+  button{
+    @include ui.btn($main-color, 25px);
+   }
+
   img{
     width: 10%;
   }

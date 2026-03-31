@@ -1,0 +1,23 @@
+@use 'sass:color';
+
+@mixin btn($color, $width: 10px, $height: null){
+  border-radius: 100%;
+  border: 1px solid $color;
+  width: $width;
+  height: if($height, $height, $width);
+
+  &:hover{
+      background-color: color.adjust($color, $lightness: 10%) ;
+    }
+}
+
+@mixin svg-icon($color, $size: 10px){
+  width: $size;
+  height: $size;
+  color: $color;
+
+  &:hover{
+      color: color.adjust($color, $lightness: 10%);
+      cursor: pointer;
+    }
+}

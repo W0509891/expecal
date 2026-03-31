@@ -2,25 +2,21 @@
 
 :host {
   height: 100%;
-  flex: 1 2 5%;
+  flex: 1 2 2vw;
   background-color: $main-color;
 
-  &.hide{
-     display: none;
-   }
+  &.hide {
+    display: none;
+  }
 }
 
-.sidebar-container{
-  //display: flex;
-  height: inherit;
-  //background-color: #28a745;
-
+.sidebar-container {
+  height: inherit;;
 }
-.sidebar{
-  //background-color: #a78928;
-  height: 50%;
-  //margin-top: 3em;
-  //padding: 1em;
+
+.sidebar {
+  background-color: #a78928;
+  height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -36,12 +32,11 @@
 
   .sidebar-nav-item {
     width: 100%;
-    //background-color: #a728a7;
+    padding: .4em;
     border-bottom: dotted 1px black;
 
-    img{
-      margin: 0 auto;
-      width: 80%;
+    &:hover {
+      background-color: #a728a7;
     }
   }
 }
