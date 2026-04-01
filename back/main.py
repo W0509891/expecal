@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 
 import mysql.connector
-from transactionParser import TransactionWriter
+from TransactionParser import TransactionWriter
 
 app = FastAPI()
 
