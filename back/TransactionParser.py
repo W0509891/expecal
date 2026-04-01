@@ -45,7 +45,7 @@ class TransactionWriter:
         )
 
 
-    def write(self, financial_institution: str):
+    def write(self, financial_institution: str, account_id: int = 1):
         transactions = self.parser.spit()
         db_cursor = self.database.cursor(dictionary=True)
 
@@ -54,18 +54,25 @@ class TransactionWriter:
                      'VALUES (%s, %s, %s, %s, %s, %s, %s)')
 
             for transaction in transactions:
-                data = (1, transaction["date"], float (transaction["amount"]), transaction["description"],
-                        transaction["transaction"], transaction["currency"], float(transaction["balance"]))
-
+                # Use .get() to handle missing keys and provide defaults
+                data = (
+                    account_id,
+                    transaction.get("date"),
+                    float(transaction.get("amount", 0)),
+                    transaction.get("description"),
+                    transaction.get("type") or transaction.get("transaction"),
+                    transaction.get("currency"),
+                    float(transaction.get("balance", 0))
+                )
 
                 db_cursor.execute(query, data)
             self.database.commit()
-            print(f"Sucessfully inserted {len(transactions)} transactions into the database.")
+            return f"Successfully inserted {len(transactions)} transactions into the database."
 
 
         except mysql.connector.Error as err:
-            print(f"Error: {err}")
             self.database.rollback()
+            return f"Error: {err}"
 
         finally:
             db_cursor.close()
@@ -74,17 +81,25 @@ class TransactionWriter:
 
 
 def main():
-    statementPath = pathlib.Path("/home/nagant/Downloads/Main-2022-01-to-2026-01-monthly-statements")
+    statementPath = pathlib.Path("/home/nagant/PhpstormProjects/expecal/expecal-back/uploads/statements/")
     # tw.write("W")
 
     statements = os.listdir(statementPath)
     statements.sort()
 
     for statement in statements:
-        tw = TransactionWriter(os.path.join(statementPath, statement))
-        tw.write("")
-        print(os.path.join(statementPath, statement))
+        print(f"{statements.index(statement)} - {statement}")
+    while True:
+        option = int(input("what statment do you want to parse?\n"))
+        if option > len(statements):
+            print("Invalid option")
+            continue
+        else:
+            print(os.path.join(statementPath, statements[option]))
+            break
 
+    tw = TransactionWriter(os.path.join(statementPath, statements[option]))
+    tw.write("")
     # print(os.listdir(path))
 if __name__ == "__main__":
     main()
