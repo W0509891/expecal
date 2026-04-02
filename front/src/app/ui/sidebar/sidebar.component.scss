@@ -6,6 +6,7 @@
   background-color: #333;
   transition: width 0.3s ease;
   flex-shrink: 0;
+  z-index: 2;
 
   &.hide {
     width: 0;
