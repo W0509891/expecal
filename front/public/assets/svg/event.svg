@@ -3,7 +3,7 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 800 800" style="enable-background:new 0 0 800 800;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill-rule:evenodd;clip-rule:evenodd;}
+	.st0{fill-rule:evenodd;clip-rule:evenodd; fill: currentColor}
 	.st1{fill:#FFFFFF;}
 </style>
 <path class="st0" d="M688.9,176c-7.1-13.4-18.1-24.4-31.5-31.5c-12.7-6.8-25.3-10.6-57.4-11.1V100c0-18.4-14.9-33.3-33.3-33.3
@@ -16,5 +16,6 @@
 <rect x="439" y="451" class="st0" width="135.3" height="133.3"/>
 <path class="st1" d="M659.4,608.7h63.5v57.1h55.4v54.8h-54.8v62.6h-64.7v-62.6H600v-55.1h59.1C659.1,665.5,659.4,608.1,659.4,608.7z
 	"/>
-<path d="M669.7,616.5h63.5v57.1h55.4v54.8h-54.8V791h-64.7v-62.6h-58.9v-55.1h59.1C669.4,673.3,669.7,615.9,669.7,616.5z"/>
+<path
+  class="st0" d="M669.7,616.5h63.5v57.1h55.4v54.8h-54.8V791h-64.7v-62.6h-58.9v-55.1h59.1C669.4,673.3,669.7,615.9,669.7,616.5z"/>
 </svg>

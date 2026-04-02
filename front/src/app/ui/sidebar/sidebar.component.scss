@@ -39,6 +39,16 @@
       cursor: pointer;
       transition: background 0.2s;
 
+      .svg {
+        width: 24px;
+        height: 24px;
+        color: black;
+      }
+
+      .active{
+        color: $main-color;
+      }
+
       &:hover {
         background-color: #444;
       }
@@ -52,9 +62,4 @@
     }
   }
 
-  .svg {
-    width: 24px;
-    height: 24px;
-    fill: white;
-  }
 

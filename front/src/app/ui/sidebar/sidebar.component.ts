@@ -1,5 +1,5 @@
-import {Component, Injectable} from '@angular/core';
-import {RouterLink} from "@angular/router";
+import {Component, inject, Injectable} from '@angular/core';
+import {Router, RouterLink} from "@angular/router";
 
 
 @Component({
@@ -13,7 +13,7 @@ import {RouterLink} from "@angular/router";
         @for (route of navRoutes; track $index) {
           <div class="sidebar-nav-item">
             <a [routerLink]="route.path">
-              <svg class="svg">
+              <svg [class]='["svg", isCurrentRoute(route.path)]'>
                 <use [attr.href]="route.icon"></use>
               </svg>
             </a>
@@ -26,14 +26,27 @@ import {RouterLink} from "@angular/router";
 
 
 export class SidebarComponent {
+  router: Router = inject(Router)
   navRoutes = [
-    {icon: "/assets/svg/event.svg", path: ""},
+    {icon: "/assets/svg/event.svg", path: "/"},
     {icon: "/assets/svg/stats.svg", path: '/stats'},
     {icon: "/assets/svg/upload-file.svg", path: '/uploads'},
     {icon: "/assets/svg/event.svg", path: "/transactions"},
   ]
 
-  constructor() {}
+  constructor() {
+    console.log({
+      state: this.router.routerState,
+      current: this.router.url,
+    })
+  }
+
+  isCurrentRoute(routePath: string): string {
+    if (this.router.url === routePath){
+      return "active"
+    }
+    return ""
+  }
 }
 
 @Injectable({providedIn: 'root'})
