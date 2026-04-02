@@ -1,4 +1,5 @@
 @use 'sass:color';
+@use 'sass:math' as math;
 
 $debug-outline1: 1px solid red;
 $debug-outline2: 1px solid blue;
@@ -9,9 +10,10 @@ $debug-outline4: 1px solid orange;
 $main-color: #f16daf;
 $secondary-color: #007bff;
 $tetiary-color: #dc3545;
+$day-color: #fffdf9;
 $text-color: #212529;
 $max-width: 2200px;
-$min-width: 890px;
+$min-width: 1400px;
 $credit-color: #28a745;
 $debit-color: #dc3545;
 
@@ -23,6 +25,7 @@ $debit-color: #dc3545;
 @mixin day($color){
   outline: 1px solid rgba(0, 0, 0, 0.1);
   background-color: $color;
+  min-width: math.div($min-width, 7);
 
   &:hover{
     cursor: pointer;
