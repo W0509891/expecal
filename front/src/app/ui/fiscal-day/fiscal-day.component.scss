@@ -1,15 +1,21 @@
-@use "../../../styles/variables" as *;
+@use "variables" as *;
 
 :host {
   padding: 01em;
+  display: grid;;
+  grid-template-areas: 'dayNumber'
+                        'gain'
+                        "mini";
 }
 
 .dayNumber{
+  grid-area: dayNumber;
   align-self: flex-start;
   margin-bottom: auto;
 }
 
 .gain{
+  grid-area: gain;
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
@@ -21,16 +27,16 @@
   }
 }
 
-
 .minitransactions{
-  display: flex;
-  justify-content: space-between;
+  grid-area: mini;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   margin-top: auto;
 
   :nth-child(n){
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: center;
   }
 
   .dr{

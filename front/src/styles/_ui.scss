@@ -1,0 +1,45 @@
+@use 'sass:color';
+
+@mixin btn($color, $width: 10px, $height: null){
+  border-radius: 100%;
+  border: 1px solid $color;
+  width: $width;
+  height: if($height, $height, $width);
+
+  &:hover{
+      background-color: color.adjust($color, $lightness: 10%) ;
+    }
+}
+
+@mixin btn-transparent(){
+background-color: transparent;
+  border: none;
+  &:hover{
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+}
+
+@mixin svg-icon($color, $size: 10px){
+  width: $size;
+  height: $size;
+  color: $color;
+
+  &:hover{
+      color: color.adjust($color, $lightness: 10%);
+      cursor: pointer;
+    }
+}
+
+@mixin center-over($blur: true, $zindex:null){
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: if($zindex, $zindex, 100);
+  @if $blur {backdrop-filter: blur(10px)};
+  background-color: rgba(0, 0, 0, 0.3);
+}

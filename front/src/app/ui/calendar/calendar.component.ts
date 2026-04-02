@@ -1,18 +1,18 @@
-import {Component, computed, effect, inject} from '@angular/core';
+import {Component, computed, effect, inject, model, signal} from '@angular/core';
 import {CalendarService} from "../../services/calendar.service"
 import {Day} from '../../models/CalendarModel';
-import {FiscalDayComponent} from "../fiscal-day/fiscal-day.component";
+import {FiscalDayComponent, FiscalDescription} from "../fiscal-day/fiscal-day.component";
 import {TransactionService} from '../../services/transaction.service';
+import {UploadService, UploadComponent} from '../upload/upload.component';
 
 @Component({
   selector: 'home-calendar',
-  imports: [FiscalDayComponent],
+  imports: [FiscalDayComponent, FiscalDescription, UploadComponent],
   styleUrl: './calendar.component.scss',
   template: `
     <div class="calendar-container">
       <div class="weekdays-row">
         @for (weekday of weekdays; track weekdays[$index]) {
-
           <div class="weekday-item">{{ weekday }}</div>
         }
       </div>
@@ -24,11 +24,22 @@ import {TransactionService} from '../../services/transaction.service';
             @for (day of week; track day.getId(); ) {
               <fiscal-day [day]="day"
                           [transactions]="ts.transactions()[(day.toString('short').toString())]"
-                          [class]="setDayClasses(day)" />
+                          [class]="setDayClasses(day)"
+                          (click)="dialouge(day)"
+              />
             }
           </div>
         }
       </div>
+
+      @if (show()) {
+        <fiscal-description [(day)]="selectedDay"
+                            [(visibility)]="show"
+        />
+      }
+
+      @if (UploadService.uploadForm){ <app-upload/> }
+
     </div>
 
   `,
@@ -40,8 +51,11 @@ export class CalendarComponent{
   //Injectables
   CalenderService: CalendarService = inject(CalendarService);
   ts:TransactionService = inject(TransactionService)
+  UploadService:UploadService = inject(UploadService)
 
   weekdays: string[]
+  selectedDay = model.required<Day>()
+  show = signal(false)
   startDay = computed(() => this.CalenderService.getWeeks()()[0][0].toString('short').toString());
   endDay = computed(() =>
     this.CalenderService.getWeeks()()[this.CalenderService.getWeeks()().length - 1][6].toString("short").toString())
@@ -49,6 +63,18 @@ export class CalendarComponent{
   constructor() {
     //Initializers
     this.weekdays = this.CalenderService.getWeekdays() //[Sun - sat] view on display
+
+    //TOdo preveent requests if already fetched
+     effect(() => {
+      const start = this.startDay();
+      const end = this.endDay();
+
+      this.ts.fetchTransactionByRange(start, end)
+        .then(data => {
+          this.ts.transactions.set(data)
+          this.ts.fillStore();
+        });
+    });
 
     //Event Listeners
     window.addEventListener('resize', () => {
@@ -68,7 +94,7 @@ export class CalendarComponent{
 
   screenChange() {
     console.log("screen change", window.innerWidth)
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 800) {
       //Cut weekdays to 3 letters
       this.weekdays = this.weekdays.map(item => item.substring(0, 3))
     }
@@ -77,5 +103,13 @@ export class CalendarComponent{
       //Restore weekdays to full names
       this.weekdays = this.CalenderService.getWeekdays()
     }
+  }
+
+  dialouge(e: Day){
+    if(e){
+      this.selectedDay.set(e)
+    }
+    this.show.set(!this.show())
+
   }
 }

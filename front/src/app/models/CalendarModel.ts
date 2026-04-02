@@ -272,6 +272,50 @@ export class Day {
     return this.Name
   }
 
+  //Retireves the next day
+  getNext(){
+    const month =  () =>{
+      if (this.Month.getId() === 11 && this.Id === this.Month.getNoOfDays()){
+        return new Month(0, this.Month.getYear() + 1, CalendarModel.isLeapYear(this.Month.getYear() + 1))
+      }
+
+      else if (this.Id === this.Month.getNoOfDays()){
+       return new Month(this.Month.getId() + 1, this.Month.getYear(), CalendarModel.isLeapYear(this.Month.getYear()))
+      }
+      return this.Month
+    }
+
+    const day = () => {
+      if (this.Id === this.Month.getNoOfDays()) {
+        return 1
+      }
+      return this.Id + 1
+    }
+
+    return new Day(day(), month(), [])
+  }
+
+  //Retireves the previous day
+  getPrev(){
+    const month =  () =>{
+      if (this.Month.getId() === 0 && this.Id === 1){
+        return new Month(11, this.Month.getYear() - 1, CalendarModel.isLeapYear(this.Month.getYear() - 1))
+      }
+
+      else if (this.Id === 1){
+       return new Month(this.Month.getId() - 1, this.Month.getYear(), CalendarModel.isLeapYear(this.Month.getYear()))
+      }
+      return this.Month
+    }
+
+    const day = () => {
+      if (this.Id === 1) {
+        return month().getNoOfDays()
+      }
+      return this.Id - 1
+    }
+    return new Day(day(), month(), [])
+  }
   /**
    * Returns an array of all the transactions associated with the day
    * @return {Transaction[]}

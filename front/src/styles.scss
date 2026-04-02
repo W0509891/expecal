@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'variables' as *;
+@use "ui" as *;
 
 * {
   padding: 0;
@@ -15,4 +16,12 @@ body{
 
 *, ::after, ::before {
   box-sizing: border-box;
+}
+
+.svg{
+    @include svg-icon($main-color, 50px);
+}
+
+.btn-transparent {
+  @include btn-transparent();
 }

@@ -4,46 +4,42 @@
 :host {
   display: block;
   height: 100%;
-  //width: 100%;
   flex: 2 1 95%;
 }
 
 .calendar-container {
-  display: flex;
-  flex-direction: column;
   height: inherit;
+  display: grid;
+  grid-template-rows: 3% auto;
+  grid-template-areas: 'weekdays'
+                       'weeks';
 }
 
+//Modnday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
 .weekdays-row {
-  //width: 100%;
-  display: flex;
-  justify-content: space-evenly;
+  grid-area: weekdays;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
 
   .weekday-item {
     background-color: #28a745;
-    outline: 1px solid black;
-    flex-grow: 1;
+    border-right: 1px dotted black;
     text-align: center;
-    width: math.percentage(math.div(100, 7));
+    align-content: center;
   }
 }
 
+// 1, 2, 3....
 .weeks {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  flex: 1;
-  //width: 100%;
+  grid-area: weeks;
+  display: grid;
 
   .week-row {
-    display: flex;
-    flex: 1;
-
-    //border: 1px solid orange;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
 
     .day {
-      @include day(#f4ebda);
+      @include day($day-color);
     }
 
     //If Week Day is current day

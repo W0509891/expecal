@@ -96,7 +96,7 @@ export class CalendarService {
   changeMonthBy(num: number) {
     const currentDate = this.calModel.CalDate  // Save the current date
     // Change the current date by the given number of months
-    this.calModel.CalDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + num, 1)
+    this.calModel.CalDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + num, currentDate.getDate())
 
     // If the year has changed, update the year object in the calendarService
     if (this.calModel.CalDate.getFullYear() !== currentDate.getFullYear()) {
@@ -105,12 +105,16 @@ export class CalendarService {
 
     // Update the current month object in the calendarService
     this._month = this.calModel.getYear().getAllMonths()[this.calModel.CalDate.getMonth()]
+
+    // Update the current day object in the calendarService
+    this._current_day = this.calModel.getDay();
     this.generateMonthView()  // Regenerate the month view based on the new month object
 
   }
 
   setNewDate(year: number, month: number = 0, day: number = 1) {
-    this.calModel.CalDate = new Date(year, month, day)
+
+    this.calModel.CalDate = new Date(year, month-1, day)
     this.calModel.setYear(year)
     this._month = this.calModel.getMonth();
     this._current_day = this.calModel.getDay();

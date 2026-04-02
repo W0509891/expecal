@@ -8,31 +8,17 @@ import {RouterLink} from "@angular/router";
   styleUrl: './sidebar.component.scss',
   template: `
     <div class="sidebar-container">
-      <div class="sidebar">
-        <div class="sidebar-nav">
+      <div class="sidebar-nav">
 
+        @for (route of navRoutes; track $index) {
           <div class="sidebar-nav-item">
-            <a [routerLink]="['']">
-              <img src="/assets/svg/event.svg">
+            <a [routerLink]="route.path">
+              <svg class="svg">
+                <use [attr.href]="route.icon"></use>
+              </svg>
             </a>
           </div>
-
-          <div class="sidebar-nav-item">
-            <a [routerLink]="['/stats']">
-              <img src="/assets/svg/stats.svg" alt="">
-            </a>
-          </div>
-
-          <div class="sidebar-nav-item">
-            <img src="/assets/svg/event.svg">
-          </div>
-
-          <div class="sidebar-nav-item">
-            <img src="/assets/svg/event.svg">
-
-          </div>
-
-        </div>
+        }
       </div>
     </div>
   `
@@ -40,6 +26,13 @@ import {RouterLink} from "@angular/router";
 
 
 export class SidebarComponent {
+  navRoutes = [
+    {icon: "/assets/svg/event.svg", path: ""},
+    {icon: "/assets/svg/stats.svg", path: '/stats'},
+    {icon: "/assets/svg/upload-file.svg", path: '/uploads'},
+    {icon: "/assets/svg/event.svg", path: "/transactions"},
+  ]
+
   constructor() {}
 }
 
@@ -47,7 +40,7 @@ export class SidebarComponent {
 class SidebarService{
   navbarClosed: boolean = false
 
-  toggle(){
+  showNav(){
     this.navbarClosed = !this.navbarClosed
     console.log(this.navbarClosed, "Sidebar Closed status")
   }
