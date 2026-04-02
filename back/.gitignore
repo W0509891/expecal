@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Environment variables
+.env
+
+# JetBrains IDEs
+.idea/
+*.http
+
+# CSV data files
+*.csv
+
+# Database queries
+Database queries/
+
+# Diagrams
+*.drawio
+
+# KDE directory settings
+.directory
