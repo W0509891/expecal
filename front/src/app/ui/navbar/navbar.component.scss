@@ -9,46 +9,104 @@ a:hover{
   color: #007bff;
 }
 .navbar-container {
-  outline: $debug-outline1;
-  background-color: #5a5a5a;
+  background-color: #333;
   width: 100%;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 
   .navbar{
     display: flex;
     align-items: center;
-    //background-color: #f16daf;
     justify-content: space-between;
     margin: 0 auto;
-    height: inherit;
+    height: 60px;
+    padding: 0 1rem;
+  }
+}
 
-    &:nth-child(n), a{
-      padding: .7em;
+.left, .right, .center {
+  display: flex;
+  align-items: center;
+}
+
+.left{
+  flex: 1;
+}
+
+.center{
+  flex: 2;
+  justify-content: center;
+  h3 {
+    margin: 0;
+    color: white !important;
+    font-weight: 500;
+  }
+}
+
+.right{
+  flex: 1;
+  justify-content: flex-end;
+  gap: 1rem;
+
+  div p {
+    margin: 0;
+    color: white !important;
+    font-size: 0.9rem;
+  }
+
+  button{
+    background: #444;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #555;
     }
   }
 }
 
+#upload {
+  background-color: $main-color;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: opacity 0.2s;
 
-.left{
-  flex: 1 1;
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
-.center{
-  flex: 2 1;
-  display: flex;
-  justify-content: center;
-
+.svg {
+  width: 24px;
+  height: 24px;
+  fill: white;
+  cursor: pointer;
 }
 
-.right{
-  flex:  1;
-  display: flex;
-  place-items: end;
+.date-picker{
+  background-color: transparent;
+  border: none;
+  color: $main-color;
+  outline: none;
+  font-weight: bold;
+  cursor: pointer;
 
-  button{
-    @include ui.btn($main-color, 25px);
-   }
+  &::-webkit-calendar-picker-indicator{
+    //opacity: 0;
+    outline: 1px solid crimson;
+    //width: 100px;
+    //position: absolute;
+  }
 
-  img{
-    width: 10%;
+  &::-webkit-datetime-edit-day-field{
+    //background-color: #95b359;
   }
 }
