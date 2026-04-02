@@ -2,42 +2,58 @@
 
 :host {
   height: 100%;
-  flex: 1 2 2vw;
-  background-color: $main-color;
+  width: 60px;
+  background-color: #333;
+  transition: width 0.3s ease;
+  flex-shrink: 0;
 
   &.hide {
-    display: none;
+    width: 0;
+    overflow: hidden;
   }
 }
 
 .sidebar-container {
-  height: inherit;;
-}
-
-.sidebar {
-  background-color: #a78928;
-  height: fit-content;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.sidebar-nav {
-  margin-top: 4em;
   height: 100%;
-  //background-color: #0cfffb;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+}
 
-  .sidebar-nav-item {
-    width: 100%;
-    padding: .4em;
-    border-bottom: dotted 1px black;
+  .sidebar {
+    background-color: #a78928;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+  }
 
-    &:hover {
-      background-color: #a728a7;
+  .sidebar-nav {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .sidebar-nav-item {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      padding: 0.8rem 0;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background-color: #444;
+      }
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
     }
   }
-}
+
+  .svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
+  }
 

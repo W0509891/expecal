@@ -8,19 +8,17 @@ import {RouterLink} from "@angular/router";
   styleUrl: './sidebar.component.scss',
   template: `
     <div class="sidebar-container">
-      <div class="sidebar">
-        <div class="sidebar-nav">
+      <div class="sidebar-nav">
 
-          @for (route of navRoutes; track $index) {
-            <div class="sidebar-nav-item">
-              <a [routerLink]="route.path">
-                <svg class="svg">
-                  <use [attr.href]="route.icon"></use>
-                </svg>
-              </a>
-            </div>
-          }
-        </div>
+        @for (route of navRoutes; track $index) {
+          <div class="sidebar-nav-item">
+            <a [routerLink]="route.path">
+              <svg class="svg">
+                <use [attr.href]="route.icon"></use>
+              </svg>
+            </a>
+          </div>
+        }
       </div>
     </div>
   `
@@ -31,8 +29,8 @@ export class SidebarComponent {
   navRoutes = [
     {icon: "/assets/svg/event.svg", path: ""},
     {icon: "/assets/svg/stats.svg", path: '/stats'},
-    {icon: "/assets/svg/upload-file.svg", path: '/upload'},
-    {icon: "/assets/svg/event.svg", path: ""},
+    {icon: "/assets/svg/upload-file.svg", path: '/uploads'},
+    {icon: "/assets/svg/event.svg", path: "/transactions"},
   ]
 
   constructor() {}
