@@ -1,113 +1,18 @@
 import {Component, computed, effect, inject, model, signal} from '@angular/core';
 import {CalendarService} from "../../services/calendar.service"
 import {Day} from '../../models/CalendarModel';
-import {FiscalDayComponent} from "../fiscal-day/fiscal-day.component";
+import {FiscalDayComponent, FiscalDescription} from "../fiscal-day/fiscal-day.component";
 import {TransactionService} from '../../services/transaction.service';
-
-@Component({
-  selector: "fiscal-description",
-  styleUrl: `calendar.component2.scss`,
-  template: `
-    <div class="transaction-details-container">
-      <div class="date-line">
-        <div>
-            <button (click)="prevDay()">&lt;</button>
-            <button (click)="nextDay()">&gt;</button>
-        </div>
-        <h3>{{ day().toString('short') }}</h3>
-        <button (click)="visibility.set(!visibility())">Close</button>
-      </div>
-
-      <div class="transaction-table">
-        <div class=" header trow">
-          <h4 class="tcol1">Description</h4>
-          <div class="tcolspan">
-            <h4 class="tcol2">DR</h4>
-            <h4 class="tcol3">CR</h4>
-          </div>
-        </div>
-        @for (transaction of day().getTransactions(); track transaction.id) {
-          <div class="transaction-details trow">
-            <p class="tcol1">{{ transaction.description }}</p>
-            <div class="tcolspan">
-              <p [class]="trType(transaction.amount)">
-              {{ transaction.amount }}
-              </p>
-            </div>
-          </div>
-        }
-        <div class=" total trow">
-          <h4 class="tcol1">{{day().totalGain()}}</h4>
-          <div class="tcolspan">
-            <h4 class="tcol2">{{day().totalDebit()}}</h4>
-            <h4 class="tcol3">{{day().totalCredit()}}</h4>
-          </div>
-        </div>
-        </div>
-    </div>`
-})
-export class FiscalDiscription{
-  ts:TransactionService = inject(TransactionService)
-
-  day=  model.required<Day>();
-  visibility = model<boolean>();
-  trType = (amount: number):string => {
-    if(amount < 0){
-      return "tcol2"
-    }
-    return "tcol3"
-  }
-
-  ngOnInit(){
-    // console.log(this.day())
-  }
-
-  prevDay(){
-    const prev = this.day().getPrev()
-    const prev_date = prev.toString("short").toString()
-
-    if(this.ts.transaction_store[prev_date] === undefined){
-      this.ts.fetchTransactionByDate(prev_date).then(data => {
-        let packag = { [prev_date]: data }
-
-        this.day().setTransactions(data)
-        this.ts.fillStore(packag)
-      })
-    }
-    else {
-      prev.setTransactions(this.ts.transaction_store[prev_date])
-    }
-    this.day.set(prev)
-  }
-
-  nextDay(){
-    const next = this.day().getNext()
-    const next_date = next.toString("short").toString()
-    if(this.ts.transaction_store[next_date] === undefined){
-      this.ts.fetchTransactionByDate(next_date).then(data => {
-        let packag = { [next_date]: data }
-
-        this.day().setTransactions(data)
-        this.ts.fillStore(packag)
-      })
-    }
-    else {
-      next.setTransactions(this.ts.transaction_store[next_date])
-    }
-    this.day.set(next)
-  }
-}
-
+import {UploadService, UploadComponent} from '../upload/upload.component';
 
 @Component({
   selector: 'home-calendar',
-  imports: [FiscalDayComponent, FiscalDiscription],
+  imports: [FiscalDayComponent, FiscalDescription, UploadComponent],
   styleUrl: './calendar.component.scss',
   template: `
     <div class="calendar-container">
       <div class="weekdays-row">
         @for (weekday of weekdays; track weekdays[$index]) {
-
           <div class="weekday-item">{{ weekday }}</div>
         }
       </div>
@@ -133,6 +38,8 @@ export class FiscalDiscription{
         />
       }
 
+      @if (UploadService.uploadForm){ <app-upload/> }
+
     </div>
 
   `,
@@ -144,6 +51,7 @@ export class CalendarComponent{
   //Injectables
   CalenderService: CalendarService = inject(CalendarService);
   ts:TransactionService = inject(TransactionService)
+  UploadService:UploadService = inject(UploadService)
 
   weekdays: string[]
   selectedDay = model.required<Day>()
@@ -186,7 +94,7 @@ export class CalendarComponent{
 
   screenChange() {
     console.log("screen change", window.innerWidth)
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 800) {
       //Cut weekdays to 3 letters
       this.weekdays = this.weekdays.map(item => item.substring(0, 3))
     }

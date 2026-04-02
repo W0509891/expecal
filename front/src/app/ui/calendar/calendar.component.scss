@@ -23,8 +23,9 @@
 
   .weekday-item {
     background-color: #28a745;
-    outline: 1px solid black;
+    border-right: 1px dotted black;
     text-align: center;
+    align-content: center;
   }
 }
 
@@ -38,7 +39,7 @@
     grid-template-columns: repeat(7, 1fr);
 
     .day {
-      @include day(#f4ebda);
+      @include day($day-color);
     }
 
     //If Week Day is current day
